@@ -1,8 +1,38 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import login from "../../assets/images/login.svg";
 import login_logo from "../../assets/images/login-logo.svg";
+import axiosInstance from "../../lib/axios-instance";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import { useState } from "react";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const togglePass = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const username = e.target.email.value;
+    const password = e.target.password.value;
+    const user = { username, password };
+    console.log(user);
+
+    try {
+      const response = await axiosInstance.post("/token", user);
+      const accessToken = response.data.data.token;
+      const data = response.data.data;
+      console.log(data);
+
+      localStorage.setItem("accessToken", accessToken);
+
+      navigate("/");
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   return (
     <div className='p-[24px] md:p-[40px] md:h-screen'>
       <div className='rounded-[30px]  h-full bg-[#FFFFFF] border-[1px] border-[#E2E9EF] grid grid-cols-1 md:grid-cols-2 gap-y-[50px]'>
@@ -20,26 +50,38 @@ const Login = () => {
             <p className='font-inter text-[16px] text-[#636364] text-center mb-[30px] mt-[5px]'>
               Welcome Back! Please Enter Your Details.
             </p>
-            <form action=''>
+            <form action='' onSubmit={handleLogin}>
               <div className='form-control mb-[30px]'>
                 <label htmlFor=''>Email</label>
                 <input
                   type='email'
-                  name=''
+                  name='email'
                   id=''
                   placeholder='Enter Your Email'
                   className='w-full p-[17px] bg-[#F6F6F7] rounded-[10px] mt-[8px]'
                 />
               </div>
-              <div className='form-control mb-[30px]'>
+              <div className='form-control relative mb-[30px]'>
                 <label htmlFor=''>Password</label>
                 <input
                   className='w-full p-[17px] bg-[#F6F6F7] rounded-[10px] mt-[8px]'
-                  type='password'
-                  name=''
+                  type={isPasswordVisible ? "text" : "password"}
+                  name='password'
                   id=''
                   placeholder='.......'
                 />
+                <div className='cursor-pointer' onClick={togglePass}>
+                  {isPasswordVisible ? (
+                    <span className='absolute top-[52px] right-0 flex items-center px-4 text-[#8A8E8F]'>
+                      <FontAwesomeIcon icon={faEyeSlash} />
+                    </span>
+                  ) : (
+                    <span className='absolute top-[52px] right-0 flex items-center px-4 text-[#8A8E8F]'>
+                      <FontAwesomeIcon icon={faEye} />
+                    </span>
+                  )}
+                </div>
+
                 <p className='font-inter text-[16px] text-[#636364] text-right mt-[30px]'>
                   Forgot Password
                 </p>

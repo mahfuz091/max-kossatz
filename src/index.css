@@ -24,3 +24,79 @@
   text-transform: capitalize;
   color: #3b3d3f;
 }
+.text-warning {
+  color: #fbbd23;
+}
+
+body {
+  background: #f6f6f7;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 116px 1fr 1fr 1fr;
+  grid-template-rows: 0fr 3fr;
+  grid-template-areas:
+    "sidebar main main main"
+    "sidebar main main main";
+  height: 100%;
+
+  overflow-x: hidden;
+}
+
+#sidebar {
+  grid-area: sidebar;
+  height: 100%;
+  /* border-radius: 15px; */
+  border: 1px solid rgba(240, 109, 35, 0.16);
+  background: #fff;
+  transition: all 0.8s ease-in-out;
+  -webkit-transition: all 0.8s ease-in-out;
+}
+
+/* Main  */
+.main-container {
+  grid-area: main;
+  /* overflow-y: hidden; */
+  overflow-x: hidden;
+  max-width: 100%;
+  height: calc(100vh - 79px);
+  background: #fff;
+  border-radius: 30px;
+
+  margin: 30px 42px 49px 38px;
+  /* margin-left: 38px;
+  margin-top: 30px; */
+}
+
+.date p {
+  position: relative;
+}
+.date p.active::after {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 4px;
+  width: 90%;
+  height: 4px;
+  border-radius: 4px 4px 0px 0px;
+  background: #007aff;
+}
+.date p.active {
+  color: #007aff;
+}
+.line {
+  display: block;
+  width: 88%;
+  height: 1px;
+  background: #e2e9ef;
+}
+
+/* react quill */
+
+.ql-toolbar.ql-snow {
+  border: none !important;
+}
+.ql-container.ql-snow {
+  border: none !important;
+}

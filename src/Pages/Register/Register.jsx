@@ -1,9 +1,51 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import register from "../../assets/images/register.svg";
+import axiosInstance from "../../lib/axios-instance";
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+
 const Register = () => {
+  const navigate = useNavigate();
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+    useState(false);
+  const [confirmPassError, setConfirmPassError] = useState(false);
+  const togglePass = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+  const toggleConfirmPass = () => {
+    setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
+  };
+
+  const handleLRegister = async (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    const confirmPassword = e.target.confirmPassword.value;
+    const user = { email, password };
+    console.log(user);
+
+    if (password !== confirmPassword) {
+      setConfirmPassError(true);
+    } else {
+      try {
+        const response = await axiosInstance.post("/users", user);
+        const accessToken = response.data.data.token;
+        const data = response.data.data;
+        console.log(data);
+
+        localStorage.setItem("accessToken", accessToken);
+
+        navigate("/");
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+  };
   return (
     <div className='p-[24px] md:p-[40px] md:h-screen'>
-      <div className='rounded-[30px]  h-full bg-[#FFFFFF] border-[1px] border-[#E2E9EF] grid grid-cols-1 md:grid-cols-2'>
+      <div className='rounded-[30px]  h-full bg-[#FFFFFF] border-[1px] border-[#E2E9EF] grid grid-cols-1 md:grid-cols-2 gap-y-[50px]'>
         <div className='bg-[#007AFF]  rounded-t-[30px] md:rounded-tr-[0] md:rounded-s-[30px] flex justify-center items-center  '>
           <div className='max-[767px]:py-[87px] max-[767px]:px-[22px]'>
             <img className='max-[767px]:w-[299px] ' src={register} alt='' />
@@ -17,36 +59,65 @@ const Register = () => {
             <p className='font-inter text-[16px] text-[#636364] text-center mb-[30px] mt-[5px]'>
               Register with your details for note-tracking
             </p>
-            <form action=''>
+            <form action='' onSubmit={handleLRegister}>
               <div className='form-control mb-[20px]'>
                 <label htmlFor=''>Email</label>
                 <input
                   type='email'
-                  name=''
+                  name='email'
                   id=''
                   placeholder='Enter Your Email'
                   className='w-full p-[17px] bg-[#F6F6F7] rounded-[10px] mt-[8px]'
                 />
               </div>
-              <div className='form-control mb-[20px]'>
+              <div className='form-control relative mb-[20px]'>
                 <label htmlFor=''>Password</label>
                 <input
                   className='w-full p-[17px] bg-[#F6F6F7] rounded-[10px] mt-[8px]'
-                  type='password'
-                  name=''
+                  type={isPasswordVisible ? "text" : "password"}
+                  name='password'
                   id=''
                   placeholder='.......'
                 />
+                <div className='cursor-pointer' onClick={togglePass}>
+                  {isPasswordVisible ? (
+                    <span className='absolute top-[52px] right-0 flex items-center px-4 text-[#8A8E8F]'>
+                      <FontAwesomeIcon icon={faEyeSlash} />
+                    </span>
+                  ) : (
+                    <span className='absolute top-[52px] right-0 flex items-center px-4 text-[#8A8E8F]'>
+                      <FontAwesomeIcon icon={faEye} />
+                    </span>
+                  )}
+                </div>
               </div>
-              <div className='form-control mb-[70px]'>
+              <div className='form-control relative mb-[70px]'>
                 <label htmlFor=''>Confirm Password</label>
                 <input
                   className='w-full p-[17px] bg-[#F6F6F7] rounded-[10px] mt-[8px]'
-                  type='password'
-                  name=''
+                  type={isConfirmPasswordVisible ? "text" : "password"}
+                  name='confirmPassword'
                   id=''
                   placeholder='..........'
                 />
+                {confirmPassError ? (
+                  <>
+                    <p className='mt-2 text-warning'>Password does not match</p>
+                  </>
+                ) : (
+                  ""
+                )}
+                <div className='cursor-pointer' onClick={toggleConfirmPass}>
+                  {isConfirmPasswordVisible ? (
+                    <span className='absolute top-[52px] right-0 flex items-center px-4 text-[#8A8E8F]'>
+                      <FontAwesomeIcon icon={faEyeSlash} />
+                    </span>
+                  ) : (
+                    <span className='absolute top-[52px] right-0 flex items-center px-4 text-[#8A8E8F]'>
+                      <FontAwesomeIcon icon={faEye} />
+                    </span>
+                  )}
+                </div>
               </div>
               <div className='form-control'>
                 <input

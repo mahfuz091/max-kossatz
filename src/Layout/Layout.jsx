@@ -1,5 +1,8 @@
 // import { useState } from "react";
 
+import { Outlet } from "react-router-dom";
+import Sidebar from "../Pages/Sidebar/Sidebar";
+
 const Layout = () => {
   //   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
 
@@ -7,7 +10,12 @@ const Layout = () => {
   //     setOpenSidebarToggle(!openSidebarToggle);
   //   };
 
-  return <div className='grid-container'></div>;
+  return (
+    <div className='grid-container'>
+      <Sidebar />
+      <Outlet />
+    </div>
+  );
 };
 
 export default Layout;
