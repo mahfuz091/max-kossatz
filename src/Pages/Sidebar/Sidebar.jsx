@@ -7,7 +7,7 @@ const Sidebar = () => {
   return (
     <aside
       id='sidebar'
-      className='bg-[#fff] pb-[70px] flex flex-col justify-between  '
+      className='bg-[#fff] pb-[70px] flex flex-col justify-between dark:bg-[#292c35] '
     >
       <div className=''>
         <div className=' pt-[40px] pb-[30px]'>

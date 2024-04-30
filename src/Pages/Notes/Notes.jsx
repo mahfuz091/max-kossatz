@@ -20,9 +20,9 @@ const Notes = () => {
   };
   console.log(date);
   return (
-    <div className='mt-[27px]'>
+    <div className='mt-[27px]  '>
       <div className='pb-[16px] border-b-[#E2E9EF] border-b-[1px] flex justify-between items-center mb-[30px]'>
-        <h3 className='font-poppins text-[20px] md:text-[24px] font-semibold text-[#313236]'>
+        <h3 className='font-poppins text-[20px] md:text-[24px] font-semibold text-[#313236] dark:text-white'>
           My Notes
         </h3>
         <div className='flex items-center gap-[12px]'>

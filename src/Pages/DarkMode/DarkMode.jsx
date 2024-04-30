@@ -3,11 +3,34 @@
 // import { ReactComponent as Sun } from "./Sun.svg";
 // import { ReactComponent as Moon } from "./Moon.svg";
 import "./DarkMode.css";
+import { useEffect, useState } from "react";
 
 const DarkMode = () => {
+  const [theme, setTheme] = useState("light");
+  console.log(theme);
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+      document.documentElement.classList.remove("light");
+    } else {
+      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.add("light");
+    }
+  }),
+    [theme];
+  const handleThemeSwitch = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
+  console.log(theme);
   return (
     <div className='dark_mode'>
-      <input className='dark_mode_input' type='checkbox' id='darkmode-toggle' />
+      <input
+        className='dark_mode_input'
+        type='checkbox'
+        id='darkmode-toggle'
+        checked={theme === "dark"}
+        onClick={handleThemeSwitch}
+      />
       <label className='dark_mode_label' htmlFor='darkmode-toggle'>
         <svg
           width='12'
